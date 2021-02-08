@@ -233,6 +233,28 @@ class dynamic_format_arg_store
   }
 };
 
+template<typename T>
+inline dynamic_format_arg_store<format_context> args(const T &map)
+{
+  dynamic_format_arg_store<format_context> store;
+  for(const auto &pair : map)
+  {
+    store.push_back(arg(pair.first, pair.second));
+  }
+  return store;
+}
+
+template<typename T>
+inline dynamic_format_arg_store<format_context> args(const std::reference_wrapper<T> &map)
+{
+  dynamic_format_arg_store<format_context> store;
+  for(const auto &pair : map)
+  {
+    store.push_back(std::cref(arg(pair.first, pair.second)));
+  }
+  return store;
+}
+
 FMT_END_NAMESPACE
 
 #endif  // FMT_ARGS_H_
